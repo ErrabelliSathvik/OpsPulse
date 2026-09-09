@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OpsPulse — AI Project Update Copilot</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <!-- ==================================================
+             HEADER
+        =================================================== -->
+
+        <header class="header">
+
+            <div>
+                <div class="brand">
+                    OpsPulse
+                </div>
+
+                <div class="subtitle">
+                    AI Project Update Copilot
+                </div>
+            </div>
+
+            <div class="header-badge">
+                AI-Assisted
+            </div>
+
+        </header>
+
+
+        <!-- ==================================================
+             INTRO
+        =================================================== -->
+
+        <section class="intro">
+
+            <h1>
+                Turn project updates into actionable information.
+            </h1>
+
+            <p>
+                Paste an employee's project update below.
+                OpsPulse converts the update into a standardized
+                manager view with validation and risk signals.
+            </p>
+
+        </section>
+
+
+        <!-- ==================================================
+             SUBMIT UPDATE
+        =================================================== -->
+
+        <section class="card">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>
+                        Submit Project Update
+                    </h2>
+
+                    <p class="section-description">
+                        Enter a short employee status update.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <textarea
+                id="updateInput"
+                placeholder="Example: The API work is progressing, but this issue might block the release..."
+            ></textarea>
+
+
+            <div class="input-footer">
+
+                <span id="charCount">
+                    0 characters
+                </span>
+
+                <button
+                    id="analyzeButton"
+                    onclick="analyzeUpdate()"
+                >
+                    Analyze Update
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==================================================
+             LOADING
+        =================================================== -->
+
+        <div
+            id="loading"
+            class="loading hidden"
+        >
+            <div class="spinner"></div>
+
+            <span>
+                Analyzing project update...
+            </span>
+        </div>
+
+
+        <!-- ==================================================
+             ERROR
+        =================================================== -->
+
+        <div
+            id="error"
+            class="error hidden"
+        ></div>
+
+
+        <!-- ==================================================
+             MANAGER VIEW
+        =================================================== -->
+
+        <section
+            id="results"
+            class="results hidden"
+        >
+
+            <div class="manager-header">
+
+                <div>
+
+                    <span class="eyebrow">
+                        MANAGER VIEW
+                    </span>
+
+                    <h2>
+                        Project Update Analysis
+                    </h2>
+
+                </div>
+
+
+                <div class="analysis-mode">
+
+                    <span>
+                        Analysis Mode
+                    </span>
+
+                    <strong id="analysisMode">
+                        Unknown
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 SUMMARY CARDS
+            =================================================== -->
+
+            <div class="summary-grid">
+
+                <div class="summary-card">
+
+                    <span class="label">
+                        Employee
+                    </span>
+
+                    <strong id="employee">
+                        Not specified
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <span class="label">
+                        Team
+                    </span>
+
+                    <strong id="team">
+                        Not specified
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <span class="label">
+                        Status
+                    </span>
+
+                    <strong id="status">
+                        In Progress
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <span class="label">
+                        Risk Level
+                    </span>
+
+                    <strong id="riskLevel">
+                        Low
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <span class="label">
+                        Confidence
+                    </span>
+
+                    <strong id="confidence">
+                        0%
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <span class="label">
+                        Validation
+                    </span>
+
+                    <strong id="validation">
+                        Validated
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 PROGRESS / NEXT STEP
+            =================================================== -->
+
+            <div class="two-column">
+
+                <div class="detail-card">
+
+                    <h3>
+                        Progress
+                    </h3>
+
+                    <p id="progress">
+                        —
+                    </p>
+
+                </div>
+
+
+                <div class="detail-card">
+
+                    <h3>
+                        Next Step
+                    </h3>
+
+                    <p id="nextStep">
+                        —
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 BLOCKERS / DEPENDENCIES
+            =================================================== -->
+
+            <div class="two-column">
+
+                <div class="detail-card">
+
+                    <h3>
+                        Blockers
+                    </h3>
+
+                    <div id="blockers">
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="detail-card">
+
+                    <h3>
+                        Dependencies
+                    </h3>
+
+                    <div id="dependencies">
+                        —
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 MANAGER SUMMARY
+            =================================================== -->
+
+            <div class="summary-section">
+
+                <span class="eyebrow">
+                    MANAGER SUMMARY
+                </span>
+
+                <p id="managerSummary">
+                    —
+                </p>
+
+            </div>
+
+
+            <!-- ==================================================
+                 CLARIFICATION
+            =================================================== -->
+
+            <div
+                id="clarificationBox"
+                class="clarification hidden"
+            >
+
+                <div class="clarification-icon">
+                    ?
+                </div>
+
+                <div>
+
+                    <span class="eyebrow">
+                        CLARIFICATION REQUIRED
+                    </span>
+
+                    <p id="clarificationQuestion">
+                        —
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+    </div>
+
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
