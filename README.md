@@ -340,3 +340,23 @@ Dependencies: None
 
 OpsPulse is designed to reduce the manual effort required to interpret inconsistent project updates and provide managers with a concise, standardized view of project status and potential risks.
 
+
+
+\## Screenshots
+
+
+
+\### Dashboard
+
+
+
+!\[OpsPulse Dashboard](screenshots/dashboard.png)
+
+
+
+\### AI Analysis
+
+
+
+!\[OpsPulse AI Analysis](screenshots/analysis.png)
+
